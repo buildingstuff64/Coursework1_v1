@@ -469,7 +469,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d4a40707773f2e4a85c7bb60c5a5780, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0.25
+  speed: 0.15
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -966,7 +966,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c73585ef77c978849bfba0fd3ef5f3fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 2.5
+  speed: 5
   trailRenderer: {fileID: 1608891793}
 --- !u!1 &1322995138
 GameObject:
@@ -1111,6 +1111,7 @@ MonoBehaviour:
   islandRadiusMax: 40
   islandVertexCount: 12
   randomness: 0.4
+  pathBlockingIterations: 40
 --- !u!4 &1519680742
 Transform:
   m_ObjectHideFlags: 0
