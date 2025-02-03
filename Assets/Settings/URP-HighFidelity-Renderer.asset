@@ -51,6 +51,9 @@ MonoBehaviour:
   settings:
     renderPassEvent: 550
     screenHeight: 180
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -96,10 +99,10 @@ MonoBehaviour:
   m_AssetVersion: 2
   m_OpaqueLayerMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 215
   m_TransparentLayerMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 215
   m_DefaultStencilState:
     overrideStencilState: 0
     stencilReference: 0

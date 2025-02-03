@@ -11,6 +11,7 @@ public class EnemyWalking : MonoBehaviour
     Vector3 currBL;
 
 
+
     public GameObject FRtarget;
     public GameObject BRtarget;
     public GameObject FLtarget;
@@ -21,9 +22,11 @@ public class EnemyWalking : MonoBehaviour
     public GameObject bdFL;
     public GameObject bdBL;
 
+    [Header("Variables")]
     public float moveForce = 5;
     public float distanceThreshold = 1.5f;
     public float legMoveSpeed = 5f;
+    public float bodyOffset = 1;
 
     Leg lgFR;
     Leg lgFL;
@@ -51,10 +54,20 @@ public class EnemyWalking : MonoBehaviour
 
     private void Update()
     {
+        float height = 0;
         lgFR.updateLeg(legMoveSpeed, rb.velocity);
         lgFL.updateLeg(legMoveSpeed, rb.velocity);
         lgBR.updateLeg(legMoveSpeed, rb.velocity);
         lgBL.updateLeg(legMoveSpeed, rb.velocity);
+
+        height += lgFR.Target.transform.position.y;
+        height += lgFL.Target.transform.position.y;
+        height += lgBR.Target.transform.position.y;
+        height += lgBL.Target.transform.position.y;
+        height /= 8;
+        //print(height);
+
+        transform.position = new Vector3(transform.position.x, height + bodyOffset, transform.position.z);
 
         //Vector3 dir = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
         //GetComponent<Rigidbody>().AddForce(transform.forward * 2);
@@ -96,7 +109,7 @@ public class EnemyWalking : MonoBehaviour
 
         if (Input.GetKey(KeyCode.Mouse0))
         {
-            Debug.Log("mouse down");
+            //Debug.Log("mouse down");
             for (int i = 0; i < gunEnds.Length; i++)
             {
                 ParticleSystem pt = gunEnds[i].GetComponent<ParticleSystem>();

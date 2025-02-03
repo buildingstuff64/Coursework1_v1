@@ -12,6 +12,7 @@ public class PixelizeFeature : ScriptableRendererFeature
     }
 
     public CustomPassSettings settings;
+    public LayerMask layerMask;
     private PixelizePass customPass;
 
     public override void Create()

@@ -1,16 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting.Antlr3.Runtime.Tree;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Rendering;
+using static UnityEditor.Searcher.SearcherWindow.Alignment;
 
 public class moveer : MonoBehaviour
 {
     Rigidbody rb;
     public float speed;
+    public float turnSpeed;
     public TrailRenderer trailRenderer;
+    Plane ground;
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        ground = new Plane(Vector3.up, transform.position);
     }
 
     // Update is called once per frame
@@ -50,10 +57,29 @@ public class moveer : MonoBehaviour
         }
 
 
-        if (rb.velocity.magnitude > 0.1f)
+        //if (rb.velocity.magnitude > 0.1f)
+        //{
+        //    Quaternion desiredRotation = Quaternion.LookRotation(rb.velocity);
+        //    transform.rotation = Quaternion.Slerp(transform.rotation, desiredRotation, Time.deltaTime * 10);
+        //}
+
+        //RaycastHit hit;
+        //Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        //if (Physics.Raycast(ray, out hit, LayerMask.NameToLayer("CameraGround")))
+        //{
+        //    Vector3 point = hit.point;
+        //}
+
+        //transform.LookAt(finalPoint, Vector3.up);
+
+
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if(ground.Raycast(ray, out float d))
         {
-            Quaternion desiredRotation = Quaternion.LookRotation(rb.velocity);
-            transform.rotation = Quaternion.Slerp(transform.rotation, desiredRotation, Time.deltaTime * 10);
+            Vector3 rotation = ray.GetPoint(d) - transform.position;
+            Quaternion rotationQuaternion = Quaternion.LookRotation(rotation, Vector3.up);
+            transform.rotation = Quaternion.Slerp(transform.rotation, rotationQuaternion, Time.deltaTime * turnSpeed);
+            
         }
 
     }
