@@ -2,53 +2,56 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour, Idamageable
+public class Enemy : MonoBehaviour
 {
     public float health = 100;
     public float damageFlashTime = 2;
 
-    private Material ogmat;
     private float currentFlashDuration = 100;
-    private float h, s, v;
+    private List<Material> materials;
+    private List<float> h, s, v;
 
     public void takeDamage(float d)
     {
         health -= d;
 
-        if (health <= 0)
-        {
-            health = 100;
-        }
+        if (health <= 0) death();
 
         currentFlashDuration = 0;
     }
 
-    private IEnumerator damageFlash()
+    private void death()
     {
-        Material mat = GetComponent<MeshRenderer>().material;
-        float h, s, v;
-        Color og = mat.color;
-        Color.RGBToHSV(og, out h, out s, out v);
-        float duration = 0f;
-
-        while(duration < damageFlashTime)
-        {
-            duration += Time.deltaTime;
-            float emission = Mathf.PingPong(duration * (2 / damageFlashTime), 1.0f);
-            Color c = Color.HSVToRGB(h, s - emission, v);
-            mat.color = c;
-            print(emission);
-            yield return new WaitForEndOfFrame();
-        }
-
-        yield break;
+        print("death");
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        ogmat = GetComponent<MeshRenderer>().material;
-        Color.RGBToHSV(ogmat.color, out h, out s, out v);
+        materials = new List<Material>();
+        h = new List<float>();
+        s = new List<float>();
+        v = new List<float>();
+
+        List<Material> ogMaterials = new List<Material>();
+        MeshRenderer[] m = GetComponentsInChildren<MeshRenderer>();
+        foreach (MeshRenderer mr in m)
+        {
+            materials.AddRange(mr.materials);
+            ogMaterials.AddRange(mr.materials);
+        }
+
+
+        for (int i = 0; i < materials.Count; i++)
+        {
+            float _h, _s, _v;
+            Color.RGBToHSV(materials[i].color, out _h, out _s, out _v);
+            h.Add(_h);
+            s.Add(_s);
+            v.Add(_v);
+        }
+
+        foreach (DamageComponent g in transform.GetComponentsInChildren<DamageComponent>()) g.setEnemy(this);
 
     }
 
@@ -59,9 +62,12 @@ public class Enemy : MonoBehaviour, Idamageable
         if (currentFlashDuration < damageFlashTime)
         {
             float emission = Mathf.PingPong(currentFlashDuration * (2 / damageFlashTime), 1.0f);
-            Color c = Color.HSVToRGB(h, s - emission, v);
-            ogmat.color = c;
-            print(emission);
+
+            for (int i = 0; i < materials.Count; i++)
+            {
+                Color c = Color.HSVToRGB(h[i], s[i] - emission, v[i]);
+                materials[i].color = c;
+            }
         }
 
 

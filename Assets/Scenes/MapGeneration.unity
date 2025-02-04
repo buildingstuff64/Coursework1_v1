@@ -11814,7 +11814,7 @@ MonoBehaviour:
   islandFab: {fileID: 2004890774280267324, guid: e9a8e82961009ad4ab720e18993743e5,
     type: 3}
   cube: {fileID: 8190348661029754920, guid: 376518d1855801347835d7f6f010bacc, type: 3}
-  islandAreaRadius: 750
+  islandAreaRadius: 250
   islandIterationCount: 5000
   islandRadiusMin: 10
   islandRadiusMax: 40

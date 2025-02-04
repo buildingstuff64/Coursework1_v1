@@ -13,6 +13,7 @@ public class Gun : MonoBehaviour
     public float DamageMax;
     public float Speed;
     public bool isAutomatic;
+    public Gradient damagePopupColor;
 
     private float currentCooldown;
     private float cooldown;
