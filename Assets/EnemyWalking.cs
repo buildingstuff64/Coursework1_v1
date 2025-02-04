@@ -154,7 +154,7 @@ public class EnemyWalking : MonoBehaviour
         return curr;
     }
 
-    class Leg
+    private class Leg
     {
         public Vector3 Curr;
         private Vector3 Old;

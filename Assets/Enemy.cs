@@ -23,27 +23,6 @@ public class Enemy : MonoBehaviour, Idamageable
         currentFlashDuration = 0;
     }
 
-    private IEnumerator damageFlash()
-    {
-        Material mat = GetComponent<MeshRenderer>().material;
-        float h, s, v;
-        Color og = mat.color;
-        Color.RGBToHSV(og, out h, out s, out v);
-        float duration = 0f;
-
-        while(duration < damageFlashTime)
-        {
-            duration += Time.deltaTime;
-            float emission = Mathf.PingPong(duration * (2 / damageFlashTime), 1.0f);
-            Color c = Color.HSVToRGB(h, s - emission, v);
-            mat.color = c;
-            print(emission);
-            yield return new WaitForEndOfFrame();
-        }
-
-        yield break;
-    }
-
     // Start is called before the first frame update
     void Start()
     {
@@ -52,8 +31,12 @@ public class Enemy : MonoBehaviour, Idamageable
 
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
+    {
+        checkDamageFlash();
+    }
+
+    void checkDamageFlash()
     {
         currentFlashDuration += Time.deltaTime;
         if (currentFlashDuration < damageFlashTime)
@@ -63,7 +46,5 @@ public class Enemy : MonoBehaviour, Idamageable
             ogmat.color = c;
             print(emission);
         }
-
-
     }
 }
