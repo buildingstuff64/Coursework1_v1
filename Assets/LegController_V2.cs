@@ -30,7 +30,6 @@ public class LegController_V2 : MonoBehaviour
 
         for (int i = 0; i < legs.Length; i++) { legs[i].updateLeg(); } 
 
-        print(currentLeg);
         if (legs[currentLeg].getIsMoving() == false)
         {
             legs[currentLeg].doMove = false;

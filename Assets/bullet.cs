@@ -26,6 +26,7 @@ public class bullet : MonoBehaviour, IProjectile
             GetComponent<SphereCollider>().isTrigger = false;
             print("hit");
             createDamagePopup(other, realDamage, damage);
+            gameObject.SetActive(false);
             Destroy(gameObject);
         }
     }

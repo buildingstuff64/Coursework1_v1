@@ -64,7 +64,7 @@ public class Leg : MonoBehaviour
     public void CheckDistance()
     {
         Ray ray = new Ray(BodyOffset.transform.position + Vector3.up * 3, Vector3.down);
-        if (Physics.Raycast(ray, out RaycastHit hit, 10))
+        if (Physics.Raycast(ray, out RaycastHit hit, 10, LayerMask.GetMask("Ground")))
         {
             if((Vector3.Distance(hit.point, CurrentPosition) > LegController_V2.stepThreshold) && doMove == true)
             {
