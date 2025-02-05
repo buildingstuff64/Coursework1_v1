@@ -29,6 +29,7 @@ public class Create_Map_V3 : MonoBehaviour
     public int pathBlockingIterations;
 
     private NavMeshSurface navmesh;
+    private List<Island> finalIslands = new List<Island>();
 
     // Start is called before the first frame update
     void Start()
@@ -89,7 +90,7 @@ public class Create_Map_V3 : MonoBehaviour
         }
 
         //cull all not connected islands and merge into a singluar list
-        List<Island> finalIslands = new List<Island>();
+        finalIslands = new List<Island>();
         foreach (List<Island> path in paths) { finalIslands.AddRange(path); }
         finalIslands = finalIslands.Distinct().ToList();
 
@@ -110,11 +111,35 @@ public class Create_Map_V3 : MonoBehaviour
             }
         }
 
-
         //create and build the navmesh
         navmesh = GetComponent<NavMeshSurface>();
         navmesh.BuildNavMesh();
 
+        spawnEnemies();
+
+    }
+
+    void spawnEnemies()
+    {
+        print(finalIslands.Count);
+        foreach (Island island in finalIslands)
+        {
+            if (!island.isEnd && !island.isStart)
+            {
+                int count = Mathf.RoundToInt(island.farEdgeMax / 10);
+                for (int i = 0; i < count; i++)
+                {
+                    Vector2 p = island.point + (Random.insideUnitCircle * island.farEdgeMax);
+                    Vector3 v = new Vector3(p.x, 10, p.y);
+                    Debug.DrawRay(v + island.transform.position, Vector3.down, Color.red, 1000f);
+                    if (Physics.Raycast(v + island.transform.position, Vector3.down, out RaycastHit hit, 20))
+                    {
+                        PrefabManager.instance.spawnEnemy(hit.point);
+                    }
+                    print("test");
+                }
+            }
+        }
     }
 
     void createBridge(Island from, Island to)
