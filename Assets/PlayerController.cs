@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, Idamageable
 {
+    static public PlayerController instance;
 
     public float moveSpeed;
     public float dashSpeed;
@@ -16,9 +17,19 @@ public class PlayerController : MonoBehaviour
 
     private float currentDashCooldown;
     public float currentDashCharges = 3;
+
+    public float Health;
+    private float maxHealth;
+    private float timeSinceLastDamaged = 0;
+    public float regenTime;
+    public float regenRate;
+    private float healthrate = 0;
+
     // Start is called before the first frame update
     void Start()
     {
+        maxHealth = Health;
+        instance = this;
         rb = GetComponent<Rigidbody>();
         trail = GetComponentInChildren<TrailRenderer>();
         ground = new Plane(Vector3.up, transform.position);
@@ -29,7 +40,7 @@ public class PlayerController : MonoBehaviour
     {
         //Movement
         Vector3 moveDirection = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized;
-        rb.AddForce(moveDirection * moveSpeed * Time.deltaTime * 1000, ForceMode.Force);
+        rb.AddForce(moveDirection * moveSpeed * Time.deltaTime * 1000, ForceMode.Acceleration);
 
         //Dash
         currentDashCooldown += Time.deltaTime;
@@ -57,6 +68,39 @@ public class PlayerController : MonoBehaviour
             transform.rotation = rotationQuaternion;
         }
 
+        timeSinceLastDamaged += Time.deltaTime;
+        if (timeSinceLastDamaged > regenTime && Health < maxHealth)
+        {
+            healthrate += Time.deltaTime;
+            if (healthrate > 1/regenRate) 
+            {
+                if (Health + regenRate > maxHealth) { Health = maxHealth; }
+                else
+                {
+                    Health += 1;
+                    createHealthPopup(1);
+                }
+                healthrate = 0;
+            }
+            UIManager.Instance.updateHealthbar(maxHealth, Health);
+        }
+
     }
 
+    private void createHealthPopup(float h)
+    {
+        GameObject g = Instantiate(PrefabManager.instance.damagePopupPrefab, transform.position, Quaternion.identity);
+        DamagePopup popup = g.GetComponent<DamagePopup>();
+        Color c = Color.green;
+        popup.Setup(Mathf.RoundToInt(h), c);
+    }
+
+
+    public float takeDamage(float damage)
+    {
+        Health -= damage;
+        timeSinceLastDamaged = 0;
+        UIManager.Instance.updateHealthbar(maxHealth, Health);
+        return damage;
+    }
 }

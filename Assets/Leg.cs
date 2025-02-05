@@ -13,16 +13,21 @@ public class Leg : MonoBehaviour
     private float legLerp = 1;
     public bool doMove = true;
 
-    private void Start()
+    private void Awake()
+    {
+        setup();
+    }
+
+    private void setup()
     {
         TargetTip = getTargetGameobject();
+        print(TargetTip.transform);
         BodyOffset = new GameObject();
         BodyOffset.transform.parent = transform.parent.parent;
         BodyOffset.transform.position = TargetTip.transform.position;
         BodyOffset.name = string.Format("{0} BodyOffset", name);
         CurrentPosition = TargetTip.transform.position;
         OldPosition = CurrentPosition;
-
     }
 
     public void updateLeg()
@@ -78,7 +83,7 @@ public class Leg : MonoBehaviour
 
     private GameObject getTargetGameobject()
     {
-        Transform[] gs = GetComponentsInChildren<Transform>();
+        Transform[] gs = transform.GetComponentsInChildren<Transform>();
         foreach (Transform go in gs) { if (go.name == "Rig 1_target") return go.gameObject; }
         return null;
     }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.Android;
 
 public class Enemy : MonoBehaviour
@@ -9,6 +10,12 @@ public class Enemy : MonoBehaviour
     public float damageFlashTime = 2;
     public Color flashColor;
 
+    public enum EnemyStates { scan, move, lockon, attack};
+    public EnemyStates state;
+    public float scanDistance = 40;
+    public float lockonDistance = 50;
+    public float engageRange = 20;
+
     private float currentFlashDuration = 100;
     private List<Material> materials;
     private List<Material> ogMaterials;
@@ -16,6 +23,14 @@ public class Enemy : MonoBehaviour
 
     private HealthBar healthBar;
     private float maxHealth;
+
+    private NavMeshAgent agent;
+
+    public GameObject Turret;
+    public float turretTurnSpeed;
+    public float shootturnSpeed;
+    private Gun gun;
+    private float gunHeat = 0;
 
     public void takeDamage(float d)
     {
@@ -39,12 +54,13 @@ public class Enemy : MonoBehaviour
         Destroy(gameObject);
         Destroy(g, 15);
 
-
     }
 
     // Start is called before the first frame update
     void Start()
     {
+        gun = GetComponent<Gun>();
+        agent = GetComponent<NavMeshAgent>();
         maxHealth = currentHealth;
         CreateHealthbar();
 
@@ -78,6 +94,70 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        checkDamageFlash();
+
+        switch (state)
+        {
+            case EnemyStates.scan:
+                state = scanForPlayer(scanDistance) ? EnemyStates.move : EnemyStates.scan;
+                break;
+            case EnemyStates.move:
+                moveToRange(engageRange);
+                state = EnemyStates.lockon;
+                break;
+            case EnemyStates.lockon:
+                state = lockon() ? EnemyStates.attack : EnemyStates.lockon;
+                break;
+            case EnemyStates.attack:
+                attack();
+                break;
+
+        }
+
+    }
+
+    private bool scanForPlayer(float inrange)
+    {
+        return Vector3.Distance(transform.position, PlayerController.instance.transform.position) < inrange ? true : false;
+    }
+
+    private void moveToRange(float range)
+    {
+        Vector3 direction = transform.position - PlayerController.instance.transform.position;
+        direction.Normalize();
+        direction *= range;
+        agent.destination = PlayerController.instance.transform.position + direction;
+    }
+
+    private bool lockon()
+    {
+        Vector3 dir = PlayerController.instance.transform.position - Turret.transform.position;
+        Turret.transform.rotation = Quaternion.Slerp(Turret.transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime * turretTurnSpeed);
+        float angle = Vector3.Angle(Turret.transform.forward, dir);
+
+        if (Vector3.Distance(transform.position, PlayerController.instance.transform.position) < lockonDistance && angle < gun.Spread)
+        {
+            return true;
+        }
+        else return false;
+    }
+
+    private void attack()
+    {
+        Vector3 dir = (PlayerController.instance.transform.position - Turret.transform.position).normalized;
+        Turret.transform.rotation = Quaternion.Slerp(Turret.transform.rotation, Quaternion.LookRotation(dir, Vector3.up), Time.deltaTime * shootturnSpeed);
+        float angle = Vector3.Angle(Turret.transform.forward, dir);
+        gun.fireEnemyWeapon();
+        gunHeat += Time.deltaTime;
+        if (gunHeat > 3 || angle > 90 || Vector3.Distance(transform.position, PlayerController.instance.transform.position) > engageRange)
+        {
+            state = EnemyStates.scan;
+            gunHeat = 0;
+        }
+    }
+
+    private void checkDamageFlash()
+    {
         currentFlashDuration += Time.deltaTime;
         if (currentFlashDuration < damageFlashTime)
         {
@@ -85,13 +165,13 @@ public class Enemy : MonoBehaviour
 
             for (int i = 0; i < materials.Count; i++)
             {
-                
+
                 Color c = Color.HSVToRGB(h[i], s[i] - emission, v[i] + emission);
                 materials[i].color = c;
             }
         }
-
     }
+
 
     private void CreateHealthbar()
     {

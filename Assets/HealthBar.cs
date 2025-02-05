@@ -42,9 +42,10 @@ public class HealthBar : MonoBehaviour
         }
         else
         {
-            print(ogColor[0]);
             _image[0].color = ogColor[0];
             _image[1].color = ogColor[1];
         }
+
+        transform.LookAt(Camera.main.transform.position, Vector3.up);
     }
 }

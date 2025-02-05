@@ -12,6 +12,8 @@ public class Gun : MonoBehaviour
     public float DamageMin;
     public float DamageMax;
     public float Speed;
+    public float Spread;
+    public float bulletTime;
     public bool isAutomatic;
     public Gradient damagePopupColor;
 
@@ -48,10 +50,21 @@ public class Gun : MonoBehaviour
         currentCooldown = 0;
 
         GameObject b = Instantiate(prefab, barrelEnd.transform.position, Quaternion.identity);
+        Vector3 f = barrelEnd.transform.forward * Speed;
+        f = Quaternion.Euler(0, Random.Range(-Spread, Spread), 0) * f;
         b.GetComponent<IProjectile>().onFire(this);
-        b.GetComponent<Rigidbody>().AddForce(transform.forward * Speed, ForceMode.VelocityChange);
-        Destroy(b, 2f);
+        b.GetComponent<Rigidbody>().AddForce(f, ForceMode.VelocityChange);
+        Destroy(b, bulletTime);
         //rb.AddForce(-transform.forward, ForceMode.Impulse);
+    }
+
+    public void fireEnemyWeapon()
+    {
+        currentCooldown += Time.deltaTime;
+        if (currentCooldown >= cooldown)
+        {
+            fireBullet();
+        }
     }
 
 
