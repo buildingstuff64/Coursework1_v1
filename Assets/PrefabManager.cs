@@ -21,7 +21,7 @@ public class PrefabManager : MonoBehaviour
         GameObject g = Instantiate(damagePopupPrefab, transform.position, Quaternion.identity);
         DamagePopup popup = g.GetComponent<DamagePopup>();
         g.transform.position = new Vector3(10000, 0, 10000);
-        popup.Setup(Mathf.RoundToInt(0), Color.red);
+        popup.Setup(Mathf.RoundToInt(0).ToString(), Color.red);
     }
 
     public void spawnEnemy(Vector3 position)

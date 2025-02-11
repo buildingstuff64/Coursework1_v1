@@ -115,7 +115,7 @@ public class Create_Map_V3 : MonoBehaviour
         navmesh = GetComponent<NavMeshSurface>();
         navmesh.BuildNavMesh();
 
-        spawnEnemies();
+        // spawnEnemies();
 
     }
 
@@ -150,6 +150,10 @@ public class Create_Map_V3 : MonoBehaviour
         g.transform.LookAt(to.center);
         g.transform.localScale = new Vector3(10, 1, Vector3.Distance(from.center, to.center));
         g.transform.position += Vector3.down * 0.51f;
+        g.AddComponent<Bridge>();
+        Bridge bridge = g.GetComponent<Bridge>();
+        bridge.from = from;
+        bridge.to = to;
     }
 
     List<List<Island>> createRandomPaths(Pathfinding pathfinding, int iterations)

@@ -92,9 +92,8 @@ public class PlayerController : MonoBehaviour, Idamageable
         GameObject g = Instantiate(PrefabManager.instance.damagePopupPrefab, transform.position, Quaternion.identity);
         DamagePopup popup = g.GetComponent<DamagePopup>();
         Color c = Color.green;
-        popup.Setup(Mathf.RoundToInt(h), c);
+        popup.Setup(Mathf.RoundToInt(h).ToString(), c);
     }
-
 
     public float takeDamage(float damage)
     {

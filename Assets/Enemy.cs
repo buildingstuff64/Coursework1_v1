@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.Android;
 
 public class Enemy : MonoBehaviour
 {
@@ -77,7 +77,6 @@ public class Enemy : MonoBehaviour
             ogMaterials.AddRange(mr.materials);
         }
 
-
         for (int i = 0; i < materials.Count; i++)
         {
             float _h, _s, _v;
@@ -99,7 +98,9 @@ public class Enemy : MonoBehaviour
         switch (state)
         {
             case EnemyStates.scan:
-                state = scanForPlayer(scanDistance) ? EnemyStates.move : EnemyStates.scan;
+                bool b = scanForPlayer(scanDistance);
+                if (b) { createPopup(); }
+                state = b ? EnemyStates.move : EnemyStates.scan;
                 break;
             case EnemyStates.move:
                 moveToRange(engageRange);
@@ -111,7 +112,6 @@ public class Enemy : MonoBehaviour
             case EnemyStates.attack:
                 attack();
                 break;
-
         }
 
     }
@@ -172,10 +172,17 @@ public class Enemy : MonoBehaviour
         }
     }
 
-
     private void CreateHealthbar()
     {
         GameObject hbar = Instantiate(PrefabManager.instance.healthbarPrefab, transform);
         healthBar = hbar.GetComponent<HealthBar>();
+    }
+
+    private void createPopup()
+    {
+        GameObject g = Instantiate(PrefabManager.instance.damagePopupPrefab, transform.position+Vector3.up*3, Quaternion.identity);
+        DamagePopup popup = g.GetComponent<DamagePopup>();
+        popup.Setup("!", Color.red);
+        popup.GetComponent<TextMeshPro>().fontSize = 50;
     }
 }

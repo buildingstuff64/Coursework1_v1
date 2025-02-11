@@ -1,6 +1,7 @@
 using DelaunatorSharp;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -16,6 +17,7 @@ public class Island : MonoBehaviour
 
     public bool isStart = false;
     public bool isEnd = false;
+    public bool isTriggered = false;
 
     public float[] layerThicknesses;
     public float farEdgeMax = 0;
@@ -32,6 +34,8 @@ public class Island : MonoBehaviour
 
     public List<Island> next = new List<Island>();
     public List<Island> previous = new List<Island>();
+
+    public List<Collider> areaColliders = new List<Collider>();
 
     public void createIslandMesh()
     {
@@ -55,6 +59,21 @@ public class Island : MonoBehaviour
         isWalkable = true;
     }
 
+    public void spawnEnemies(int count)
+    {
+        if (isTriggered) return;
+        for (int i = 0; i < count; i++)
+        {
+            Vector2 p = point + (Random.insideUnitCircle * farEdgeMax);
+            Vector3 v = new Vector3(p.x, 10, p.y);
+            Debug.DrawRay(v + transform.position, Vector3.down, Color.red, 1000f);
+            if (Physics.Raycast(v + transform.position, Vector3.down, out RaycastHit hit, 20))
+            {
+                PrefabManager.instance.spawnEnemy(hit.point);
+            }
+        }
+        isTriggered = true;
+    }
 
 
     public float getTopNoise()

@@ -36,7 +36,7 @@ public class bullet : MonoBehaviour, IProjectile
         GameObject g = Instantiate(PrefabManager.instance.damagePopupPrefab, transform.position, Quaternion.identity);
         DamagePopup popup = g.GetComponent<DamagePopup>();
         Color c = gradient.Evaluate(0.5f - (damage-realdamage));
-        popup.Setup(Mathf.RoundToInt(realdamage), c);
+        popup.Setup(Mathf.RoundToInt(realdamage).ToString(), c);
     }
 
 }

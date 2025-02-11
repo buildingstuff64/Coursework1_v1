@@ -13,9 +13,9 @@ public class DamagePopup : MonoBehaviour
         textMeshPro = GetComponent<TextMeshPro>();
         xMove = Random.Range(-1, 1);
     }
-    public void Setup(int damageAmount, Color c)
+    public void Setup(string damageAmount, Color c)
     {
-        textMeshPro.SetText(damageAmount.ToString());
+        textMeshPro.SetText(damageAmount);
         textMeshPro.color = c;
     }
 
