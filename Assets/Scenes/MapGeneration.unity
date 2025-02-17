@@ -1047,9 +1047,9 @@ MonoBehaviour:
   isAutomatic: 1
   damagePopupColor:
     serializedVersion: 2
-    key0: {r: 0.5396226, g: 0.5396226, b: 0.5396226, a: 1}
-    key1: {r: 1, g: 1, b: 1, a: 1}
-    key2: {r: 0.97735846, g: 0.6052402, b: 0.035037242, a: 0}
+    key0: {r: 0.41509432, g: 0.41509432, b: 0.41509432, a: 1}
+    key1: {r: 1, g: 0.71898425, b: 0, a: 1}
+    key2: {r: 0.9764706, g: 0.30420065, b: 0.035294093, a: 0}
     key3: {r: 0, g: 0, b: 0, a: 0}
     key4: {r: 0, g: 0, b: 0, a: 0}
     key5: {r: 0, g: 0, b: 0, a: 0}
@@ -1909,6 +1909,7 @@ MonoBehaviour:
   speed: 5
   doPanIn: 1
   panSpeed: 0.5
+  idealSize: 0
   cameraMain: {fileID: 430937134}
   cameraUI: {fileID: 261369761}
 --- !u!1 &1804022748
