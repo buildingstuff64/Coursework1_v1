@@ -109,6 +109,10 @@ public class Create_Map_V3 : MonoBehaviour
             {
                 createBridge(i, next);
             }
+            if (!i.isStart && !i.isEnd)
+            {
+                i.spawnTrees();
+            }
         }
 
         //create and build the navmesh

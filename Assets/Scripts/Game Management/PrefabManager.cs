@@ -10,6 +10,7 @@ public class PrefabManager : MonoBehaviour
     public GameObject healthbarPrefab;
     public GameObject enemyDeathExplosionPrefab;
     public GameObject enemyMachineGunner;
+    public GameObject[] Trees;
 
     private void Awake()
     {
@@ -29,4 +30,13 @@ public class PrefabManager : MonoBehaviour
         GameObject e = Instantiate(enemyMachineGunner, position, Quaternion.identity);
         e.transform.rotation = Quaternion.Euler(0, Random.Range(0, 360), 0);
     }
+
+
+    public void spawnRandomTree(Vector3 position)
+    {
+        GameObject e = Instantiate(Trees[Random.Range(0, Trees.Length)], position, Quaternion.identity);
+        e.transform.rotation = Quaternion.Euler(0, Random.Range(0, 360), 0);
+        e.transform.localScale *= Random.Range(0.6f, 1.4f);
+    }
 }
+

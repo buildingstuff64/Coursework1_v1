@@ -22,9 +22,14 @@ namespace Assets.Scripts.Enemy
         public UnityEvent hitEvent;
 
         [Header("AI Stuff")]
-        private NavMeshAgent agent;
+        protected NavMeshAgent agent;
         public EnemyStates state = EnemyStates.scan;
         public GameObject scanView;
+        protected float playerAngle;
+        protected float playerRange;
+        protected Vector3 playerDirection;
+
+        public float manuverRange = 20;
 
         [Header("Model Stuff")]
         private List<Material> materials = new List<Material>();
@@ -37,11 +42,16 @@ namespace Assets.Scripts.Enemy
         public float currentAngle = 0;
         public float turnSpeed = 100;
 
+        [Header("Timers")]
+        private float timePlayerOutofView = 0;
+
         private void Start()
         {
             GameObject hbar = Instantiate(PrefabManager.instance.healthbarPrefab, transform);
             healthBar = hbar.GetComponent<HealthBar>();
             maxHealth = currentHealth;
+
+            agent = GetComponent<NavMeshAgent>(); 
 
             deathEvent.AddListener(onDeath);
             hitEvent.AddListener(onDamageHit);
@@ -83,6 +93,8 @@ namespace Assets.Scripts.Enemy
         private void onDamageHit()
         {
             currentFlashPercentage = 0;
+            if (state == EnemyStates.scan) { enemySeen(); StartCoroutine(alertNearbyEnemies()); }
+            
         }
 
         private void checkDamageFlash()
@@ -127,36 +139,43 @@ namespace Assets.Scripts.Enemy
             agent.destination = position;
         }
 
-        private void createAlertPopup()
+        private void createPopup(string p, Color c)
         {
             GameObject g = Instantiate(PrefabManager.instance.damagePopupPrefab, transform.position + Vector3.up * 3, Quaternion.identity);
             DamagePopup popup = g.GetComponent<DamagePopup>();
-            popup.Setup("!", Color.red);
+            popup.Setup(p, c);
             popup.textMeshPro.fontSize = 100;
 
         }
 
-        private void finiteStateMachine()
+        public virtual void finiteStateMachine()
         {
-            
-            switch(state)
+
+            playerDirection = PlayerController.instance.transform.position - transform.position;
+            playerAngle = Vector3.Angle(Turret.transform.forward, playerDirection);
+            playerRange = Vector3.Distance(transform.position, PlayerController.instance.transform.position);
+
+            switch (state)
             {
                 case EnemyStates.scan:
                     scan();
                     break;
                 case EnemyStates.maneuver:
+                    isPlayerLost();
                     maneuver();
                     break;
                 case EnemyStates.engage:
-                    maneuver();
+                    isPlayerLost();
+                    engage();
                     break;
                 default: 
                     break;
             }
             scanView.SetActive(state == EnemyStates.scan ? true : false);
+
         }
 
-        public void scan()
+        public virtual void scan()
         {
             turnSpeed = 10;
             if (currentAngle < 1)
@@ -168,27 +187,61 @@ namespace Assets.Scripts.Enemy
 
             float playerAngle = Vector3.Angle(Turret.transform.forward, PlayerController.instance.transform.position - transform.position);
             float playerRange = Vector3.Distance(transform.position, PlayerController.instance.transform.position);
-            if (playerAngle < 25 && playerRange < 25)
+            if ((playerAngle < 25 && playerRange < 25) || playerRange < 5)
             {
-                createAlertPopup();
-                state = EnemyStates.maneuver;
+                enemySeen();
+           
+                StartCoroutine(alertNearbyEnemies());
             }
         }
 
-        public void maneuver()
+        private IEnumerator alertNearbyEnemies()
         {
+            Collider[] colliders = Physics.OverlapSphere(transform.position, 50);
+            yield return new WaitForSeconds(1);
+            foreach (Collider collider in colliders)
+            {
+                if (collider.gameObject.GetComponent<BaseEnemy>() != null)
+                {
+                    collider.gameObject.GetComponent<BaseEnemy>().enemySeen();
+                    yield return new WaitForSeconds(0.5f);
+                }
+
+            }
+        }
+
+        public void enemySeen()
+        {
+            if (state == EnemyStates.scan)
+            {
+                createPopup("!", Color.red);    
+                state = EnemyStates.maneuver;            
+            }
+        }
+
+        public virtual void maneuver()
+        {
+            
             turnSpeed = 100;
             TurretTarget = PlayerController.instance.transform.position;
         }
 
-        public void engage()
+        public virtual void engage()
         {
+            print("Engaging");
+        }
 
+        private void isPlayerLost()
+        {
+            if (playerAngle > 45) { timePlayerOutofView += Time.deltaTime; }
+            else { timePlayerOutofView = 0; }
+
+            if (timePlayerOutofView > 5) { state = EnemyStates.scan; createPopup("?", Color.white); }
         }
 
 
         
     }
 
-    public enum EnemyStates { scan, maneuver, engage }
+    public enum EnemyStates { scan, maneuver, engage, cooldown }
 }

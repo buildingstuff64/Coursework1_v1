@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 public class Gun : MonoBehaviour
 {
-    public GameObject barrelEnd;
+    public GameObject[] barrelEnds;
     public UnityEvent shootEvent;
     public GameObject prefab;
     public float FireRate;
@@ -49,13 +49,15 @@ public class Gun : MonoBehaviour
     {
         currentCooldown = 0;
 
-        GameObject b = Instantiate(prefab, barrelEnd.transform.position, Quaternion.identity);
-        Vector3 f = barrelEnd.transform.forward * Speed;
-        f = Quaternion.Euler(0, Random.Range(-Spread, Spread), 0) * f;
-        b.GetComponent<IProjectile>().onFire(this);
-        b.GetComponent<Rigidbody>().AddForce(f, ForceMode.VelocityChange);
-        Destroy(b, bulletTime);
-        //rb.AddForce(-transform.forward, ForceMode.Impulse);
+        foreach (GameObject be in barrelEnds)
+        {
+            GameObject b = Instantiate(prefab, be.transform.position, Quaternion.identity);
+            Vector3 f = be.transform.forward * Speed;
+            f = Quaternion.Euler(0, Random.Range(-Spread, Spread), 0) * f;
+            b.GetComponent<IProjectile>().onFire(this);
+            b.GetComponent<Rigidbody>().AddForce(f, ForceMode.VelocityChange);
+            Destroy(b, bulletTime);
+        }
     }
 
     public void fireEnemyWeapon()

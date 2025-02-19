@@ -1021,7 +1021,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f67fc19596f55143a47bc1e11ce49c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  barrelEnd: {fileID: 1064278947}
+  barrelEnds:
+  - {fileID: 1064278947}
   shootEvent:
     m_PersistentCalls:
       m_Calls:
@@ -1286,8 +1287,11 @@ MonoBehaviour:
     type: 3}
   enemyDeathExplosionPrefab: {fileID: 756948333509764601, guid: 3a5ee41057c71ae4e88f454dabbc8b11,
     type: 3}
-  enemyMachineGunner: {fileID: 7361396034076623511, guid: dc312fc33c6108a4f8cb0825e33155fc,
+  enemyMachineGunner: {fileID: 5433649840346221372, guid: 729e5eb3d1742734c93bd4c3f993be06,
     type: 3}
+  Trees:
+  - {fileID: 2239587211654023486, guid: 1c8bcc9f73906734aa2f136eb141a624, type: 3}
+  - {fileID: 263191259976907266, guid: e197a211eb27bca418077c8d94d5b76f, type: 3}
 --- !u!4 &701410824
 Transform:
   m_ObjectHideFlags: 0
@@ -1787,7 +1791,7 @@ GameObject:
   - component: {fileID: 1519680741}
   - component: {fileID: 1519680743}
   m_Layer: 7
-  m_Name: MapTesting
+  m_Name: Map
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1848,7 +1852,7 @@ MonoBehaviour:
   m_Center: {x: 0, y: 2, z: 0}
   m_LayerMask:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 192
   m_UseGeometry: 1
   m_DefaultArea: 0
   m_GenerateLinks: 0

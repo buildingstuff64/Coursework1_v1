@@ -75,6 +75,25 @@ public class Island : MonoBehaviour
         isTriggered = true;
     }
 
+    public void spawnTrees()
+    {
+        for (int i = 0; i < (int)Random.Range(radius/4, radius); i++)
+        {
+            int count = 0;
+            Vector2 p = point + (Random.insideUnitCircle * farEdgeMax);
+            Vector3 v = new Vector3(p.x, 10, p.y);
+            Debug.DrawRay(v + transform.position, Vector3.down, Color.red, 1000f);
+            if (Physics.Raycast(v + transform.position, Vector3.down, out RaycastHit hit, 20))
+            {
+                if (!Physics.CheckSphere(hit.point, 25, LayerMask.NameToLayer("GroundObjects")))
+                {
+                    PrefabManager.instance.spawnRandomTree(hit.point);
+                    count++;
+                }
+            }
+        }
+    }
+
 
     public float getTopNoise()
     {
