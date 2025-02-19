@@ -88,6 +88,7 @@ namespace Assets.Scripts.Enemy
             g.GetComponent<ParticleSystem>().Play();
             Destroy(gameObject);
             Destroy(g, 15);
+            UIManager.Instance.score++;
         }
 
         private void onDamageHit()
