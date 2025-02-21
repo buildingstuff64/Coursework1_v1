@@ -33,6 +33,8 @@ public class cameraMover : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        if (PlayerController.instance == null) { return; }
+
         cameraMain.orthographicSize = Mathf.Lerp(cameraMain.orthographicSize, idealSize, Time.deltaTime * panSpeed);
 
         cameraUI.orthographicSize = cameraMain.orthographicSize;

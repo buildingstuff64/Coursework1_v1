@@ -1,3 +1,4 @@
+using Assets.Scripts.UI;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -28,6 +29,13 @@ public class UIManager : MonoBehaviour
     {
         time += Time.deltaTime;
         scoreNtime.text = string.Format("Score - {0}       Time - {1}", score, Time.time.ToString("F2"));
+    }
+
+    public void createStatpage(bool wl)
+    {
+        GameObject g = Instantiate(PrefabManager.instance.StatPage, transform);
+        stats s = new stats(Create_Map_V3.instance.finalIslands, score, wl);
+        g.GetComponent<StatsPage>().create(s);
     }
 
 }

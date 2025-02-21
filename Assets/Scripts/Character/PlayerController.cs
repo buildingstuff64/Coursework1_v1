@@ -1,5 +1,7 @@
+using Assets.Scripts.Game_Management;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour, Idamageable
@@ -84,6 +86,24 @@ public class PlayerController : MonoBehaviour, Idamageable
             }
             UIManager.Instance.updateHealthbar(maxHealth, Health);
         }
+        if (Health <= 0) { onDeath(); }
+        
+        if (!Physics.Raycast(transform.position, Vector3.down, 100)){
+            print("rawww");
+            rb.AddForce(Vector3.down * 250f * Time.deltaTime, ForceMode.Impulse);
+        }
+        
+        if (transform.position.y < -10)
+        {
+            onDeath();
+        }
+
+    }
+
+    public void onDeath()
+    {
+        GameManager.instance.onDeath();
+        Destroy(gameObject);
 
     }
 

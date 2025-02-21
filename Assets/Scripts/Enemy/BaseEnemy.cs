@@ -67,6 +67,8 @@ namespace Assets.Scripts.Enemy
 
         private void Update()
         {
+            if (PlayerController.instance == null) return;
+
             checkDamageFlash();
             updateTurretAngle();
 

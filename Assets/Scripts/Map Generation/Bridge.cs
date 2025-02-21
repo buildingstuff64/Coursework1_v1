@@ -10,7 +10,7 @@ public class Bridge : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
-            to.spawnEnemies(Random.Range(0, 5));
+            to.spawnEnemies((int)to.radius/5);
             cameraMover.instance.idealSize = (from.radius + to.radius) / 2;
         }
     }

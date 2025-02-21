@@ -62,17 +62,23 @@ public class Island : MonoBehaviour
     public void spawnEnemies(int count)
     {
         if (isTriggered) return;
-        for (int i = 0; i < count; i++)
+        int c = 0;
+        while (c < count)
         {
             Vector2 p = point + (Random.insideUnitCircle * farEdgeMax);
             Vector3 v = new Vector3(p.x, 10, p.y);
             Debug.DrawRay(v + transform.position, Vector3.down, Color.red, 1000f);
             if (Physics.Raycast(v + transform.position, Vector3.down, out RaycastHit hit, 20))
             {
-                PrefabManager.instance.spawnEnemy(hit.point);
+                if (hit.point.y < 0.1f && !Physics.CheckSphere(hit.point, 25, LayerMask.NameToLayer("GroundObjects")))
+                {
+                    PrefabManager.instance.spawnEnemy(hit.point);
+                    c++;
+                }
             }
         }
         isTriggered = true;
+
     }
 
     public void spawnTrees()
@@ -85,7 +91,7 @@ public class Island : MonoBehaviour
             Debug.DrawRay(v + transform.position, Vector3.down, Color.red, 1000f);
             if (Physics.Raycast(v + transform.position, Vector3.down, out RaycastHit hit, 20))
             {
-                if (!Physics.CheckSphere(hit.point, 25, LayerMask.NameToLayer("GroundObjects")))
+                if (!Physics.CheckSphere(hit.point, 25, LayerMask.NameToLayer("GroundObjects")) && hit.point.y < 0.1f)
                 {
                     PrefabManager.instance.spawnRandomTree(hit.point);
                     count++;

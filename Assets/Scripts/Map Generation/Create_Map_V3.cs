@@ -12,6 +12,8 @@ using static UnityEditor.Progress;
 
 public class Create_Map_V3 : MonoBehaviour
 {
+    public static Create_Map_V3 instance;
+
     public GameObject islandFab;
     public GameObject cube;
 
@@ -29,9 +31,14 @@ public class Create_Map_V3 : MonoBehaviour
     public int pathBlockingIterations;
 
     private NavMeshSurface navmesh;
-    private List<Island> finalIslands = new List<Island>();
+    public List<Island> finalIslands = new List<Island>();
 
     // Start is called before the first frame update
+    private void Awake()
+    {
+        instance = this;
+    }
+
     void Start()
     {
 

@@ -6,11 +6,17 @@ public class PrefabManager : MonoBehaviour
 {
     public static PrefabManager instance;
 
+    [Header("UI")]
     public GameObject damagePopupPrefab;
     public GameObject healthbarPrefab;
+    public GameObject StatPage;
+
+    [Header("Map")]
+    public GameObject[] Trees;
+
+    [Header("Enemies")]
     public GameObject enemyDeathExplosionPrefab;
     public GameObject enemyMachineGunner;
-    public GameObject[] Trees;
 
     private void Awake()
     {
