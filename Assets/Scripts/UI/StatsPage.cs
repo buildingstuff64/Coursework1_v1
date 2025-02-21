@@ -51,7 +51,8 @@ namespace Assets.Scripts.UI
             }
             Debug.Log(explored);
             Debug.Log(islands.Count);
-            exploreation_percent = explored / islands.Count;
+            exploreation_percent = ((float) explored / (float) islands.Count) * 100f;
+            Debug.Log(exploreation_percent);
             killcount = kills;
             time = Time.time;
             this.win_lose = win_lose;

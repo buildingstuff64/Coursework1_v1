@@ -38,11 +38,12 @@ public class PrefabManager : MonoBehaviour
     }
 
 
-    public void spawnRandomTree(Vector3 position)
+    public void spawnRandomTree(Vector3 position, Transform parent)
     {
         GameObject e = Instantiate(Trees[Random.Range(0, Trees.Length)], position, Quaternion.identity);
         e.transform.rotation = Quaternion.Euler(0, Random.Range(0, 360), 0);
         e.transform.localScale *= Random.Range(0.6f, 1.4f);
+        e.transform.parent = parent;
     }
 }
 

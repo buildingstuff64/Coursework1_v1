@@ -93,7 +93,7 @@ public class Island : MonoBehaviour
             {
                 if (!Physics.CheckSphere(hit.point, 25, LayerMask.NameToLayer("GroundObjects")) && hit.point.y < 0.1f)
                 {
-                    PrefabManager.instance.spawnRandomTree(hit.point);
+                    PrefabManager.instance.spawnRandomTree(hit.point, transform);
                     count++;
                 }
             }

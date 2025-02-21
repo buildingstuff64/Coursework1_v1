@@ -1086,12 +1086,12 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   prefab: {fileID: 4479821453422049628, guid: 6b24aacbe7376ae40bba04547dd5bbeb, type: 3}
-  FireRate: 7
+  FireRate: 10
   DamageMin: 5
   DamageMax: 12
-  Speed: 50
-  Spread: 5
-  bulletTime: 1
+  Speed: 75
+  Spread: 2
+  bulletTime: 5
   isAutomatic: 1
   damagePopupColor:
     serializedVersion: 2
