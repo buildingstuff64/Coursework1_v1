@@ -87,10 +87,20 @@ public class PlayerController : MonoBehaviour, Idamageable
             UIManager.Instance.updateHealthbar(maxHealth, Health);
         }
         if (Health <= 0) { onDeath(); }
-        
-        if (!Physics.Raycast(transform.position, Vector3.down, 100)){
+
+        bool isGrounded = Physics.Raycast(transform.position, Vector3.down, 100);
+        if (!isGrounded){
             print("rawww");
             rb.AddForce(Vector3.down * 250f * Time.deltaTime, ForceMode.Impulse);
+        }
+
+        if (moveDirection != Vector3.zero || !isGrounded)
+        {
+            rb.isKinematic = false;
+        }
+        else
+        {
+            rb.isKinematic = true;
         }
         
         if (transform.position.y < -10)
@@ -120,6 +130,7 @@ public class PlayerController : MonoBehaviour, Idamageable
         Health -= damage;
         timeSinceLastDamaged = 0;
         UIManager.Instance.updateHealthbar(maxHealth, Health);
+        UIManager.Instance.currentDamageFlash = 0;
         return damage;
     }
 }

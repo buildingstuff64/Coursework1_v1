@@ -16,7 +16,7 @@ public class PrefabManager : MonoBehaviour
 
     [Header("Enemies")]
     public GameObject enemyDeathExplosionPrefab;
-    public GameObject enemyMachineGunner;
+    public GameObject[] enemies;
 
     private void Awake()
     {
@@ -33,7 +33,7 @@ public class PrefabManager : MonoBehaviour
 
     public void spawnEnemy(Vector3 position)
     {
-        GameObject e = Instantiate(enemyMachineGunner, position, Quaternion.identity);
+        GameObject e = Instantiate(enemies[Random.Range(0, enemies.Length)], position, Quaternion.identity);
         e.transform.rotation = Quaternion.Euler(0, Random.Range(0, 360), 0);
     }
 

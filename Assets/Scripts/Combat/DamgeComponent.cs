@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class DamageComponent : MonoBehaviour, Idamageable
 {
-    private BaseEnemy enemy;
+    public BaseEnemy enemy;
     public float damageReductionPercent = 1;
     public float takeDamage(float damage)
     {

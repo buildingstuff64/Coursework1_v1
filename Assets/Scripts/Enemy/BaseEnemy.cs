@@ -9,7 +9,7 @@ using Random = UnityEngine.Random;
 
 namespace Assets.Scripts.Enemy
 {
-    public class BaseEnemy : MonoBehaviour
+    public class BaseEnemy : MonoBehaviour, Idamageable
     {
         [Header("Health Stuff")]
         public float currentHealth;
@@ -45,8 +45,13 @@ namespace Assets.Scripts.Enemy
         [Header("Timers")]
         private float timePlayerOutofView = 0;
 
-        private void Start()
+        [Header("References")]
+        public Rigidbody rb;
+        public LegController LegController;
+
+        public virtual void Start()
         {
+            rb = GetComponent<Rigidbody>();
             GameObject hbar = Instantiate(PrefabManager.instance.healthbarPrefab, transform);
             healthBar = hbar.GetComponent<HealthBar>();
             maxHealth = currentHealth;
@@ -63,6 +68,9 @@ namespace Assets.Scripts.Enemy
             }
 
             foreach (DamageComponent g in GetComponentsInChildren<DamageComponent>()) { g.setEnemy(this); }
+            LegController = GetComponentInChildren<LegController>();
+            LegController.stepSpeed = agent.speed;
+
         }
 
         private void Update()
@@ -73,17 +81,18 @@ namespace Assets.Scripts.Enemy
             updateTurretAngle();
 
             finiteStateMachine();
+
         }
 
         public void takeDamage(float damage)
         {
             currentHealth -= damage;
-            if (currentHealth <= 0 ) { deathEvent.Invoke(); }
+            if (currentHealth <= 0 ) {   deathEvent.Invoke(); }
 
             hitEvent.Invoke();
         }
 
-        private void onDeath()
+        protected virtual void onDeath()
         {
             GameObject g = Instantiate(PrefabManager.instance.enemyDeathExplosionPrefab);
             g.transform.position = transform.position + Vector3.up * 3;
@@ -201,13 +210,14 @@ namespace Assets.Scripts.Enemy
         private IEnumerator alertNearbyEnemies()
         {
             Collider[] colliders = Physics.OverlapSphere(transform.position, 50);
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(0.1f);
             foreach (Collider collider in colliders)
             {
+                if (collider == null) continue;
                 if (collider.gameObject.GetComponent<BaseEnemy>() != null)
                 {
                     collider.gameObject.GetComponent<BaseEnemy>().enemySeen();
-                    yield return new WaitForSeconds(0.5f);
+                    yield return new WaitForSeconds(0.1f);
                 }
 
             }
@@ -242,8 +252,11 @@ namespace Assets.Scripts.Enemy
             if (timePlayerOutofView > 5) { state = EnemyStates.scan; createPopup("?", Color.white); }
         }
 
-
-        
+        float Idamageable.takeDamage(float damage)
+        {
+            this.takeDamage(damage);
+            return 0;
+        }
     }
 
     public enum EnemyStates { scan, maneuver, engage, cooldown }

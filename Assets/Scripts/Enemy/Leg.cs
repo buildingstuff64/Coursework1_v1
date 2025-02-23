@@ -9,6 +9,7 @@ public class Leg : MonoBehaviour
     public Vector3 CurrentPosition;
     private Vector3 OldPosition;
     private GameObject BodyOffset;
+    private LegController LegController;
 
     private float legLerp = 1;
     public bool doMove = true;
@@ -18,6 +19,11 @@ public class Leg : MonoBehaviour
         setup();
     }
 
+
+    public void setContoller(LegController lc)
+    {
+        LegController = lc;
+    }
     private void setup()
     {
         TargetTip = getTargetGameobject();

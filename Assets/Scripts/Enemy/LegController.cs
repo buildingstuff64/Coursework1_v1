@@ -4,14 +4,15 @@ using UnityEngine;
 
 public class LegController : MonoBehaviour
 {
-    static public float stepHeight = 1f;
-    static public float stepSpeed = 10;
-    static public float stepThreshold = 0.5f;
-    static public float bodyMoveFactor = 0.5f;
+    public float stepHeight = 1f;
+    public float stepSpeed = 10;
+    public float stepThreshold = 0.5f;
+    public float bodyMoveFactor = 0.5f;
 
     private Leg[] legs;
     private int currentLeg = 0;
     private float bodyOffset;
+
 
     private void Start()
     {
@@ -22,6 +23,7 @@ public class LegController : MonoBehaviour
         h /= legs.Length;
         bodyOffset = transform.parent.position.y - h;
 
+        foreach (Leg leg in legs) { leg.setContoller(this); }
     }
 
     private void FixedUpdate()
