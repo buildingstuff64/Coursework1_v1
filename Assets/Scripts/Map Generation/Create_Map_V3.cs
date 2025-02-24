@@ -30,6 +30,12 @@ public class Create_Map_V3 : MonoBehaviour
     public float randomness;
     public int pathBlockingIterations;
 
+    [Header("Start Island")]
+    public float startIslandSize = 5f;
+
+    [Header("End Island")]
+    public float endIslandSize = 75f;
+
     private NavMeshSurface navmesh;
     public List<Island> finalIslands = new List<Island>();
 
@@ -43,8 +49,8 @@ public class Create_Map_V3 : MonoBehaviour
     {
 
         //create islands
-        Island start = spawnIsland(Vector2.zero, 5);
-        Island end = spawnIsland(Vector2.up * islandAreaRadius * 2, 100);
+        Island start = spawnIsland(Vector2.zero, startIslandSize);
+        Island end = spawnIsland(Vector2.up * islandAreaRadius * 2, endIslandSize);
         List<Island> islands = spawnIslands(start, end, islandIterationCount);
         List<Vector2> points = new List<Vector2>();
         foreach (Island island in islands)

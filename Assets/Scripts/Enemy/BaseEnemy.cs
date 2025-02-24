@@ -14,7 +14,7 @@ namespace Assets.Scripts.Enemy
         [Header("Health Stuff")]
         public float currentHealth;
         private float maxHealth;
-        private HealthBar healthBar;
+        protected HealthBar healthBar;
 
 
         [Header("Events Stuff")]

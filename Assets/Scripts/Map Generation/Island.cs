@@ -81,6 +81,19 @@ public class Island : MonoBehaviour
 
     }
 
+    public void spawnBoss()
+    {
+        Vector3 v = new Vector3(point.x, 10, point.y);
+        Debug.DrawRay(v + transform.position, Vector3.down, Color.red, 1000f);
+        if (Physics.Raycast(v + transform.position, Vector3.down, out RaycastHit hit, 20))
+        {
+            if (hit.point.y < 0.1f && !Physics.CheckSphere(hit.point, 25, LayerMask.NameToLayer("GroundObjects")))
+            {
+                PrefabManager.instance.spawnBoss(hit.point);
+            }
+        }
+    }
+
     public void spawnTrees()
     {
         for (int i = 0; i < (int)Random.Range(radius/4, radius); i++)

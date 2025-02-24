@@ -51,7 +51,7 @@ public class Gun : MonoBehaviour
 
         foreach (GameObject be in barrelEnds)
         {
-            GameObject b = Instantiate(prefab, be.transform.position, Quaternion.identity);
+            GameObject b = Instantiate(prefab, be.transform.position, Quaternion.identity, PrefabManager.instance.bulletHolder.transform);
             Vector3 f = be.transform.forward * Speed;
             f = Quaternion.Euler(0, Random.Range(-Spread, Spread), 0) * f;
             b.GetComponent<IProjectile>().onFire(this);

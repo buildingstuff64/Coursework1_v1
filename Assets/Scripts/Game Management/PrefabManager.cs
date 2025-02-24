@@ -17,10 +17,17 @@ public class PrefabManager : MonoBehaviour
     [Header("Enemies")]
     public GameObject enemyDeathExplosionPrefab;
     public GameObject[] enemies;
+    public GameObject boss;
+
+    public GameObject enemiesHolder;
+    public GameObject bulletHolder;
 
     private void Awake()
     {
         instance = this;
+        enemiesHolder = new GameObject("EnemiesHolder");
+        bulletHolder = new GameObject("BulletHolder");
+
     }
 
     private void Start()
@@ -33,7 +40,13 @@ public class PrefabManager : MonoBehaviour
 
     public void spawnEnemy(Vector3 position)
     {
-        GameObject e = Instantiate(enemies[Random.Range(0, enemies.Length)], position, Quaternion.identity);
+        GameObject e = Instantiate(enemies[Random.Range(0, enemies.Length)], position, Quaternion.identity, enemiesHolder.transform);
+        e.transform.rotation = Quaternion.Euler(0, Random.Range(0, 360), 0);
+    }
+
+    public void spawnBoss(Vector3 position)
+    {
+        GameObject e = Instantiate(boss, position + Vector3.up*4, Quaternion.identity, enemiesHolder.transform);
         e.transform.rotation = Quaternion.Euler(0, Random.Range(0, 360), 0);
     }
 

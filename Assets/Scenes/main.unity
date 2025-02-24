@@ -1519,6 +1519,7 @@ MonoBehaviour:
   enemies:
   - {fileID: 5433649840346221372, guid: 729e5eb3d1742734c93bd4c3f993be06, type: 3}
   - {fileID: 4456211429885460680, guid: 83ebc8134b831ec46a27c041e2b4bfc0, type: 3}
+  boss: {fileID: 8852734139858974789, guid: b4af4df483ef45846bb4cc5f3afdda09, type: 3}
 --- !u!4 &701410824
 Transform:
   m_ObjectHideFlags: 0
@@ -1684,7 +1685,7 @@ Transform:
   m_GameObject: {fileID: 1064278947}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.565}
+  m_LocalPosition: {x: 0, y: 0, z: 0.646}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2123,6 +2124,8 @@ MonoBehaviour:
   islandVertexCount: 12
   randomness: 0.4
   pathBlockingIterations: 40
+  startIslandSize: 5
+  endIslandSize: 75
   finalIslands: []
 --- !u!4 &1519680742
 Transform:

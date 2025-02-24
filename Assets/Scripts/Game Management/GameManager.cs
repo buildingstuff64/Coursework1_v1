@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Assets.Scripts.Enemy;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -17,6 +18,11 @@ namespace Assets.Scripts.Game_Management
         public void onWin()
         {
             UIManager.Instance.createStatpage(true);
+            foreach (BaseEnemy e in PrefabManager.instance.enemiesHolder.GetComponentsInChildren<BaseEnemy>())
+            {
+                Destroy(e.gameObject);
+            }
+
         }
 
         public void onDeath()
