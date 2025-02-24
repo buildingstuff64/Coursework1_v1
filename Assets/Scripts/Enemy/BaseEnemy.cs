@@ -49,6 +49,8 @@ namespace Assets.Scripts.Enemy
         public Rigidbody rb;
         public LegController LegController;
 
+        public bool isDead = false;
+
         public virtual void Start()
         {
             rb = GetComponent<Rigidbody>();
@@ -94,6 +96,8 @@ namespace Assets.Scripts.Enemy
 
         protected virtual void onDeath()
         {
+            if (isDead) return;
+            isDead = true;  
             GameObject g = Instantiate(PrefabManager.instance.enemyDeathExplosionPrefab);
             g.transform.position = transform.position + Vector3.up * 3;
             g.GetComponent<ParticleSystem>().Play();
@@ -254,8 +258,8 @@ namespace Assets.Scripts.Enemy
 
         float Idamageable.takeDamage(float damage)
         {
-            this.takeDamage(damage);
-            return 0;
+            currentHealth -= damage;
+            return damage;
         }
     }
 

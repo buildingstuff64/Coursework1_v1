@@ -43,8 +43,8 @@ public class Create_Map_V3 : MonoBehaviour
     {
 
         //create islands
-        Island start = spawnIsland(Vector2.zero);
-        Island end = spawnIsland(Vector2.up * islandAreaRadius * 2);
+        Island start = spawnIsland(Vector2.zero, 5);
+        Island end = spawnIsland(Vector2.up * islandAreaRadius * 2, 100);
         List<Island> islands = spawnIslands(start, end, islandIterationCount);
         List<Vector2> points = new List<Vector2>();
         foreach (Island island in islands)
@@ -216,6 +216,17 @@ public class Create_Map_V3 : MonoBehaviour
         Island island = go.GetComponent<Island>();
         float radius = Random.Range(islandRadiusMin, islandRadiusMax);
         island.createIslandParams(pos, islandVertexCount, radius, randomness, new float[] { 2f, radius, 2.4f });
+        island.createIslandMesh();
+        go.name = island.point.ToString();
+        return island;
+    }
+
+    Island spawnIsland(Vector2 pos, float size)
+    {
+        GameObject go = Instantiate(islandFab, new Vector3(pos.x, 0, pos.y), Quaternion.identity, transform);
+        go.layer = 7;
+        Island island = go.GetComponent<Island>();
+        island.createIslandParams(pos, islandVertexCount, size, randomness, new float[] { 2f, size, 2.4f });
         island.createIslandMesh();
         go.name = island.point.ToString();
         return island;

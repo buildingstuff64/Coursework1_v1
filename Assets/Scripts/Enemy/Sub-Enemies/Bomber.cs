@@ -69,8 +69,8 @@ namespace Assets.Scripts.Enemy.Sub_Enemies
 
         public override void Start()
         {
-            deathEvent.AddListener(explode);
             base.Start();
+            deathEvent.AddListener(explode);
         }
     }
 
