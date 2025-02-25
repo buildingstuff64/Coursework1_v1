@@ -44,7 +44,7 @@ public class PlayerController : MonoBehaviour, Idamageable
         Vector3 moveDirection = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized;
 
         //cheat codes
-        if (Input.GetKey(KeyCode.LeftAlt) && Input.GetKey(KeyCode.LeftShift))
+        if (Input.GetKey(KeyCode.LeftControl) && Input.GetKey(KeyCode.LeftShift))
         {
             rb.isKinematic = true;
             transform.position += moveDirection * Time.deltaTime * 100f;

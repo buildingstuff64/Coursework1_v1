@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class cameraMover : MonoBehaviour
+public class CameraController : MonoBehaviour
 {
-    static public cameraMover instance;
+    static public CameraController instance;
 
     public float speed;
     public bool doPanIn;

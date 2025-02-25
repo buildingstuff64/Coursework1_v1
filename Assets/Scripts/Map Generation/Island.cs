@@ -137,6 +137,6 @@ public class Island : MonoBehaviour
         if (collision.gameObject.tag != "Player") return;
 
 
-        cameraMover.instance.idealSize = radius;
+        CameraController.instance.idealSize = radius;
     }
 }

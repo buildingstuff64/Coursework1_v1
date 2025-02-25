@@ -16,7 +16,7 @@ public class Bridge : MonoBehaviour
             }
 
             to.spawnEnemies((int)to.radius/5);
-            cameraMover.instance.idealSize = (from.radius + to.radius) / 2;
+            CameraController.instance.idealSize = (from.radius + to.radius) / 2;
         }
     }
 }

@@ -10,6 +10,8 @@ using UnityEngine;
 using UnityEngine.AI;
 using static UnityEditor.Progress;
 
+
+//uses external package Delaunator https://github.com/nol1fe/delaunator-sharp.git?path=DelaunatorSharp.Unity for noed triangluation
 public class Create_Map_V3 : MonoBehaviour
 {
     public static Create_Map_V3 instance;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
+//A* pathfinding
 public class Pathfinding
 {
     public Island start;
@@ -73,50 +74,5 @@ public class Pathfinding
         path.Reverse();
         return path;
     }
-
-
-
-    //PathNode startNode = grid[start.x, start.y];
-    //PathNode endNode = grid[end.x, end.y];
-
-    //List<PathNode> open = new List<PathNode>();
-    //HashSet<PathNode> closed = new HashSet<PathNode>();
-    //open.Add(startNode);
-
-    //while (open.Count > 0)
-    //{
-    //    PathNode node = open[0];
-    //    for (int i = 1; i < open.Count; i++)
-    //    {
-    //        if (open[i].fCost < node.fCost || open[i].fCost == node.fCost)
-    //        {
-    //            if (open[i].hCost < node.hCost) node = open[i];
-    //        }
-    //    }
-
-    //    open.Remove(node);
-    //    closed.Add(node);
-
-    //    if (node == endNode)
-    //    {
-    //        return RetracePath(startNode, endNode);
-    //    }
-
-    //    foreach (PathNode neighbour in getNeighbours(node))
-    //    {
-    //        if (!neighbour.walkable || closed.Contains(neighbour)) continue;
-
-    //        int newCostToNeighbour = node.gCost + GetDistance(node, neighbour);
-    //        if (newCostToNeighbour < neighbour.gCost || !open.Contains(neighbour))
-    //        {
-    //            neighbour.gCost = newCostToNeighbour;
-    //            neighbour.hCost = GetDistance(neighbour, endNode);
-    //            neighbour.prev = node;
-
-    //            if (!open.Contains(neighbour)) open.Add(neighbour);
-    //        }
-    //    }
-    //}
-    //return null;
 }
 
