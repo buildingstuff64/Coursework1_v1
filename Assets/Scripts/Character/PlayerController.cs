@@ -100,7 +100,6 @@ public class PlayerController : MonoBehaviour, Idamageable
 
         bool isGrounded = Physics.Raycast(transform.position, Vector3.down, 100);
         if (!isGrounded){
-            print("rawww");
             rb.AddForce(Vector3.down * 250f * Time.deltaTime, ForceMode.Impulse);
         }
 
