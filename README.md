@@ -11,4 +11,4 @@ The only imported package is the [Delaunator](https://github.com/nol1fe/delaunat
 
 ## Gameplay Demo
 full version can be found at [Mircosoft Stream](https://heriotwatt-my.sharepoint.com/:v:/g/personal/sg2011_hw_ac_uk/EYB8JQOy9wxGgDfMcL0CAv0Bdq1By70LtYFPNV1VoHlQOw)
-![Watch](Gameplay Demo.gif)
+![Watch](GameplayDemo.gif)
